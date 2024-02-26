@@ -12,6 +12,7 @@ import {
 import { useState } from "react";
 import { z } from "zod";
 import validator from "validator";
+import { SubmitHandler, useForm, Controller } from "react-hook-form";
 
 const FormSchema = z
   .object({
@@ -50,25 +51,47 @@ const FormSchema = z
     path: ["password", "confirmPassword"],
   });
 
+type InputType = z.infer<typeof FormSchema>;
+
 export const SignUpForm = () => {
+  const { register, handleSubmit, reset, control } = useForm<InputType>();
+
   const [isVisiblePass, setIsVisiblePass] = useState(false);
   const toggleVisible = () => setIsVisiblePass((prev) => !prev);
 
+  const saveUser: SubmitHandler<InputType> = async (data) => {
+    console.log(data);
+  };
+
   return (
-    <form className="grid grid-cols-2 gap-3 p-2 border rounded-md shadow place-self-stretch">
-      <Input label="First Name" startContent={<UserIcon className="w-4" />} />
-      <Input label="Last Name" startContent={<UserIcon className="w-4" />} />
+    <form
+      onSubmit={handleSubmit(saveUser)}
+      className="grid grid-cols-2 gap-3 p-2 border rounded-md shadow place-self-stretch"
+    >
       <Input
+        {...register("firstName")}
+        label="First Name"
+        startContent={<UserIcon className="w-4" />}
+      />
+      <Input
+        {...register("lastName")}
+        label="Last Name"
+        startContent={<UserIcon className="w-4" />}
+      />
+      <Input
+        {...register("email")}
         className="col-span-2"
         label="Email"
         startContent={<EnvelopeIcon className="w-4" />}
       />
       <Input
+        {...register("phone")}
         className="col-span-2"
         label="Phone"
         startContent={<PhoneIcon className="w-4" />}
       />
       <Input
+        {...register("password")}
         className="col-span-2"
         label="Password"
         type={isVisiblePass ? "text" : "password"}
@@ -85,6 +108,7 @@ export const SignUpForm = () => {
         }
       />
       <Input
+        {...register("confirmPassword")}
         className="col-span-2"
         label="Confirm Password"
         type={isVisiblePass ? "text" : "password"}
@@ -100,9 +124,19 @@ export const SignUpForm = () => {
           )
         }
       />
-      <Checkbox className="col-span-2">
-        I Accept The <Link href="/terms">Terms</Link>
-      </Checkbox>
+      <Controller
+        control={control}
+        name="accepted"
+        render={({ field }) => (
+          <Checkbox
+            onChange={field.onChange}
+            onBlur={field.onBlur}
+            className="col-span-2"
+          >
+            I Accept The <Link href="/terms">Terms</Link>
+          </Checkbox>
+        )}
+      />
       <div className="flex justify-center col-span-2">
         <Button className="w-48" color="primary" type="submit">
           Submit
