@@ -9,11 +9,13 @@ import {
   PhoneIcon,
   UserIcon,
 } from "@heroicons/react/20/solid";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { z } from "zod";
 import validator from "validator";
 import { SubmitHandler, useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { passwordStrength } from "check-password-strength";
+import PasswordStrength from "./PasswordStrength";
 
 const FormSchema = z
   .object({
@@ -59,13 +61,19 @@ export const SignUpForm = () => {
     register,
     handleSubmit,
     reset,
+    watch,
     control,
     formState: { errors },
   } = useForm<InputType>({
     resolver: zodResolver(FormSchema),
   });
 
+  const [passStrength, setPassStrength] = useState(0);
   const [isVisiblePass, setIsVisiblePass] = useState(false);
+
+  useEffect(() => {
+    setPassStrength(passwordStrength(watch().password).id);
+  }, [watch().password]);
   const toggleVisible = () => setIsVisiblePass((prev) => !prev);
 
   const saveUser: SubmitHandler<InputType> = async (data) => {
@@ -126,6 +134,7 @@ export const SignUpForm = () => {
           )
         }
       />
+      <PasswordStrength passStrength={passStrength} />
       <Input
         errorMessage={errors.confirmPassword?.message}
         isInvalid={!!errors.confirmPassword}
