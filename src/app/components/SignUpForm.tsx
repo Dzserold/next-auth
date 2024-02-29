@@ -25,6 +25,7 @@ import {
 import { zodResolver } from "@hookform/resolvers/zod";
 import { passwordStrength } from "check-password-strength";
 import PasswordStrength from "./PasswordStrength";
+import { registerUser } from "../lib/actions/authActions";
 
 // Schema made with Zod. There is error messages for the user
 // if certain fields are not setisfied
@@ -101,7 +102,10 @@ export const SignUpForm = () => {
   const toggleVisible = () => setIsVisiblePass((prev) => !prev);
 
   const saveUser: SubmitHandler<InputType> = async (data) => {
-    console.log(data);
+    const { accepted, confirmPassword, ...user } = data;
+    try {
+      const result = await registerUser(user);
+    } catch (error) {}
   };
 
   return (
