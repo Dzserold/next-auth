@@ -9,7 +9,12 @@ const page = () => {
         <Link href="/auth/signin">Sign In</Link>
       </div>
       <SignUpForm />
-      <Image src="/login.png" alt="Login Form" width={500} height={500} />
+      <Image
+        src="/login.png"
+        alt="Login Form"
+        width={500}
+        height={500}
+      />
     </div>
   );
 };

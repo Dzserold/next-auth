@@ -3,6 +3,11 @@ import { cn } from "clsx-tailwind-merge";
 interface Props {
   passStrength: number;
 }
+
+// This function is geting the password stength as a number and
+// returns blocks as UI response based on the number height which
+// represents the password strength. Waakest password is one red line
+// the strongest password is for green lines
 const PasswordStrength = ({ passStrength }: Props) => {
   return (
     <div
@@ -11,7 +16,9 @@ const PasswordStrength = ({ passStrength }: Props) => {
         "justify-start": passStrength < 3,
       })}
     >
-      {Array.from({ length: passStrength + 1 }).map((i, index) => (
+      {Array.from({
+        length: passStrength + 1,
+      }).map((i, index) => (
         <div
           key={index}
           className={cn(

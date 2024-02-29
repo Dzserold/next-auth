@@ -1,6 +1,11 @@
 "use client";
 
-import { Button, Checkbox, Input, Link } from "@nextui-org/react";
+import {
+  Button,
+  Checkbox,
+  Input,
+  Link,
+} from "@nextui-org/react";
 import {
   EnvelopeIcon,
   EyeIcon,
@@ -12,28 +17,45 @@ import {
 import { useEffect, useState } from "react";
 import { z } from "zod";
 import validator from "validator";
-import { SubmitHandler, useForm, Controller } from "react-hook-form";
+import {
+  SubmitHandler,
+  useForm,
+  Controller,
+} from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { passwordStrength } from "check-password-strength";
 import PasswordStrength from "./PasswordStrength";
 
+// Schema made with Zod. There is error messages for the user
+// if certain fields are not setisfied
 const FormSchema = z
   .object({
     firstName: z
       .string()
       .min(2, "First Name must be at least 2 characters")
       .max(45, "First Name must be less than 45 characters")
-      .regex(new RegExp("^[a-zA-Z]+$"), "No special character allowed!"),
+      .regex(
+        new RegExp("^[a-zA-Z]+$"),
+        "No special character allowed!"
+      ),
     lastName: z
       .string()
       .min(2, "Last name must be at least 2 characters")
       .max(45, "Last name must be less than 45 characters")
-      .regex(new RegExp("^[a-zA-Z]+$"), "No special character allowed!"),
-    email: z.string().email("Please enter a valid email address"),
+      .regex(
+        new RegExp("^[a-zA-Z]+$"),
+        "No special character allowed!"
+      ),
+    email: z
+      .string()
+      .email("Please enter a valid email address"),
     phone: z
       .string()
       // Validates the phone number with an installed package
-      .refine(validator.isMobilePhone, "Please enter a valid phone number"),
+      .refine(
+        validator.isMobilePhone,
+        "Please enter a valid phone number"
+      ),
 
     password: z
       .string()
@@ -74,6 +96,8 @@ export const SignUpForm = () => {
   useEffect(() => {
     setPassStrength(passwordStrength(watch().password).id);
   }, [watch().password]);
+
+  // Makes password visible or not as the user chooses
   const toggleVisible = () => setIsVisiblePass((prev) => !prev);
 
   const saveUser: SubmitHandler<InputType> = async (data) => {
@@ -130,7 +154,10 @@ export const SignUpForm = () => {
               onClick={toggleVisible}
             />
           ) : (
-            <EyeIcon className="w-4 cursor-pointer" onClick={toggleVisible} />
+            <EyeIcon
+              className="w-4 cursor-pointer"
+              onClick={toggleVisible}
+            />
           )
         }
       />
@@ -150,7 +177,10 @@ export const SignUpForm = () => {
               onClick={toggleVisible}
             />
           ) : (
-            <EyeIcon className="w-4 cursor-pointer" onClick={toggleVisible} />
+            <EyeIcon
+              className="w-4 cursor-pointer"
+              onClick={toggleVisible}
+            />
           )
         }
       />
@@ -168,7 +198,9 @@ export const SignUpForm = () => {
         )}
       />
       {!!errors.accepted && (
-        <p style={{ color: "#f31260" }}>{errors.accepted.message}</p>
+        <p style={{ color: "#f31260" }}>
+          {errors.accepted.message}
+        </p>
       )}
       <div className="flex justify-center col-span-2">
         <Button className="w-48" color="primary" type="submit">

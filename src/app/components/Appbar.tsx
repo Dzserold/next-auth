@@ -9,7 +9,10 @@ import {
 export default function Appbar() {
   return (
     <Navbar isBordered>
-      <NavbarContent className="hidden gap-4 sm:flex" justify="center">
+      <NavbarContent
+        className="hidden gap-4 sm:flex"
+        justify="center"
+      >
         <NavbarItem>
           <Link color="foreground" href="/">
             Features
@@ -18,7 +21,12 @@ export default function Appbar() {
       </NavbarContent>
       <NavbarContent justify="end">
         <NavbarItem>
-          <Button as={Link} color="primary" href="/auth/signup" variant="flat">
+          <Button
+            as={Link}
+            color="primary"
+            href="/auth/signup"
+            variant="flat"
+          >
             Sign Up
           </Button>
         </NavbarItem>
