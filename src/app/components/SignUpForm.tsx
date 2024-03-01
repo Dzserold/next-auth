@@ -26,6 +26,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { passwordStrength } from "check-password-strength";
 import PasswordStrength from "./PasswordStrength";
 import { registerUser } from "../lib/actions/authActions";
+import { toast } from "react-toastify";
 
 // Schema made with Zod. There is error messages for the user
 // if certain fields are not setisfied
@@ -105,7 +106,11 @@ export const SignUpForm = () => {
     const { accepted, confirmPassword, ...user } = data;
     try {
       const result = await registerUser(user);
-    } catch (error) {}
+      toast.success("The user was successfully registered");
+    } catch (error) {
+      toast.error("Something went wrong");
+      console.error(error);
+    }
   };
 
   return (
