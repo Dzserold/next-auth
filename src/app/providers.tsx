@@ -10,7 +10,7 @@ export function Providers({
 }) {
   return (
     <SessionProvider>
-      <NextUIProvider>{children}</NextUIProvider>;
+      <NextUIProvider>{children}</NextUIProvider>
     </SessionProvider>
   );
 }
