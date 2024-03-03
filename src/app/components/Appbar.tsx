@@ -1,10 +1,10 @@
 import {
-  Link,
   Navbar,
   NavbarContent,
   NavbarItem,
 } from "@nextui-org/react";
 import SigninButton from "./SigninButton";
+import Link from "next/link";
 
 export default function Appbar() {
   return (
@@ -14,8 +14,8 @@ export default function Appbar() {
         justify="center"
       >
         <NavbarItem>
-          <Link color="foreground" href="/">
-            Features
+          <Link className="hover:text-sky-700" href="/">
+            Home
           </Link>
         </NavbarItem>
       </NavbarContent>

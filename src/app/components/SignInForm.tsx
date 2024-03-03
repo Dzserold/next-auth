@@ -49,47 +49,55 @@ const SignInForm = (props: Props) => {
       toast.error(result?.error);
       return;
     }
-    router.push(props.callbackUrl ? props.callbackUrl : "");
+    toast.success("Wellcome! Signed in successfully");
+    router.push(props.callbackUrl ? props.callbackUrl : "/");
   };
 
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="flex flex-col gap-2"
+      className="flex flex-col gap-2 overflow-hidden border rounded-md"
     >
-      <Input
-        label="Email"
-        {...register("email")}
-        errorMessage={errors.email?.message}
-      />
-      <Input
-        label="Password"
-        {...register("password")}
-        errorMessage={errors.password?.message}
-        endContent={
-          <button
-            onClick={() => setVisiblePass((prev) => !prev)}
+      <div className="p-3 text-center bg-gradient-to-b from-white to-slate-200 dark:from-slate-700 dark:to-slate-900">
+        Sign In Form
+      </div>
+      <div className="flex flex-col gap-4 p-2">
+        <Input
+          label="Email"
+          {...register("email")}
+          errorMessage={errors.email?.message}
+        />
+        <Input
+          label="Password"
+          {...register("password")}
+          type={visiblePass ? "text" : "password"}
+          errorMessage={errors.password?.message}
+          endContent={
+            <button
+              type="button"
+              onClick={() => setVisiblePass((prev) => !prev)}
+            >
+              {visiblePass ? (
+                <EyeSlashIcon className="w-4" />
+              ) : (
+                <EyeIcon className="w-4" />
+              )}
+            </button>
+          }
+        />
+        <div className="flex items-center justify-center">
+          <Button
+            color="primary"
+            type="submit"
+            disabled={isSubmitting}
+            isLoading={isSubmitting}
           >
-            {visiblePass ? (
-              <EyeSlashIcon className="w-4" />
-            ) : (
-              <EyeIcon className="w-4" />
-            )}
-          </button>
-        }
-      />
-      <div className="flex items-center justify-center">
-        <Button
-          color="primary"
-          type="submit"
-          disabled={isSubmitting}
-          isLoading={isSubmitting}
-        >
-          {isSubmitting ? "Signing in..." : "Sign In"}
-        </Button>
-        <Button as={Link} href="auth/signup">
-          Sign Up
-        </Button>
+            {isSubmitting ? "Signing in..." : "Sign In"}
+          </Button>
+          <Button as={Link} href="auth/signup">
+            Sign Up
+          </Button>
+        </div>
       </div>
     </form>
   );
