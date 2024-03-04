@@ -1,6 +1,12 @@
 import Image from "next/image";
+import { sendMail } from "./lib/mail";
 
-export default function Home() {
+export default async function Home() {
+  await sendMail({
+    to: "f.dzserold@gmail.com",
+    subject: "Test",
+    body: "Hello Dzserold",
+  });
   return (
     <main className="flex flex-col items-center justify-between min-h-screen p-24">
       <div className="z-10 items-center justify-between w-full max-w-5xl font-mono text-sm lg:flex">
