@@ -11,7 +11,7 @@ const page = ({ searchParams }: Props) => {
   return (
     <div className="flex flex-col items-center justify-center mt-4 ">
       <SignInForm callbackUrl={searchParams.callbackUrl} />
-      <Link href={"/auth/forgotPass"}>
+      <Link href={"/auth/forgotPassword"}>
         Forgot Your Password?
       </Link>
     </div>
