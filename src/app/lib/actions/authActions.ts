@@ -3,9 +3,14 @@
 import { User } from "@prisma/client";
 import prisma from "../prisma";
 import * as bcrypt from "bcrypt";
-import { compileActivationTemplate, sendMail } from "../mail";
+import {
+  compileActivationTemplate,
+  compileResetPassTemplate,
+  sendMail,
+} from "../mail";
 import { signJwt, verifyJwt } from "../jwt";
 
+// Register user and send him an email with activation link
 export async function registerUser(
   user: Omit<User, "id" | "emailVerified" | "image">
 ) {
@@ -37,6 +42,7 @@ type ActivateUserFunc = (
   jwtUserId: string
 ) => Promise<"userNotExist" | "alreadyActivated" | "success">;
 
+// Send email with activation link
 export const activateUser: ActivateUserFunc = async (
   jwtUserId
 ) => {
@@ -60,3 +66,31 @@ export const activateUser: ActivateUserFunc = async (
   });
   return "success";
 };
+
+// Send email with password reset link
+export async function forgotPassword(email: string) {
+  const user = await prisma.user.findUnique({
+    where: {
+      email: email,
+    },
+  });
+
+  if (!user) throw new Error("Username is not correct");
+
+  const jwtUserID = signJwt({
+    id: user.id,
+  });
+
+  const resetPassUrl = ` ${process.env.NEXTAUTH_URL}/auth/reset-password/${jwtUserID}`;
+  const body = compileResetPassTemplate(
+    user.firstName,
+    resetPassUrl
+  );
+
+  const sendResult = await sendMail({
+    to: user.email,
+    subject: "Reset Password",
+    body: body,
+  });
+  return sendResult;
+}
