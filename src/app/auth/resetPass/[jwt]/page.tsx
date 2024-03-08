@@ -1,5 +1,5 @@
 import ResetPasswordForm from "@/app/components/ResetPasswordForm";
-import { verifyJwt } from "@/app/lib/jwt";
+import { verifyJwt } from "@/lib/jwt";
 
 interface Props {
   params: {

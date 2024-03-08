@@ -11,7 +11,7 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
 import PasswordStrength from "./PasswordStrength";
 import { toast } from "react-toastify";
-import { resetPassword } from "../lib/actions/authActions";
+import { resetPassword } from "@/lib/actions/authActions";
 
 interface Props {
   jwtUserId: string;

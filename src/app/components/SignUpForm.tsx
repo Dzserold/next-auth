@@ -25,7 +25,7 @@ import {
 import { zodResolver } from "@hookform/resolvers/zod";
 import { passwordStrength } from "check-password-strength";
 import PasswordStrength from "./PasswordStrength";
-import { registerUser } from "../lib/actions/authActions";
+import { registerUser } from "@/lib/actions/authActions";
 import { toast } from "react-toastify";
 
 // Schema made with Zod. There is error messages for the user

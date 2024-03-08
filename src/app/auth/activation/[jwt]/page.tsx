@@ -1,4 +1,4 @@
-import { activateUser } from "@/app/lib/actions/authActions";
+import { activateUser } from "@/lib/actions/authActions";
 
 interface Props {
   params: { jwt: string };
