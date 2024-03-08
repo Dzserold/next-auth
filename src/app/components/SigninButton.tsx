@@ -11,7 +11,9 @@ const SigninButton = () => {
     <div className="flex items-center gap-2">
       {session && session.user ? (
         <>
-          <p>{`${session.user.firstName} ${session.user.lastName}`}</p>
+          <Link
+            href={"/profile"}
+          >{`${session.user.firstName} ${session.user.lastName}`}</Link>
           <Link
             className="transition-colors text-sky-500 hover:text-sky-600"
             href={"/api/auth/signout"}
