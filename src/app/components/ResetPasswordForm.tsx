@@ -1,16 +1,17 @@
 "use client";
-
 import {
   EyeIcon,
   EyeSlashIcon,
 } from "@heroicons/react/20/solid";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Input } from "@nextui-org/react";
+import { Button, Input } from "@nextui-org/react";
 import { passwordStrength } from "check-password-strength";
 import { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
+import { SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
 import PasswordStrength from "./PasswordStrength";
+import { toast } from "react-toastify";
+import { resetPassword } from "../lib/actions/authActions";
 
 interface Props {
   jwtUserId: string;
@@ -20,12 +21,12 @@ const FormSchema = z
   .object({
     password: z
       .string()
-      .min(6, "Password must be at least 6 characters")
+      .min(6, "Password must be at least 6 characters!")
       .max(52, "Password must be less than 52 characters"),
     confirmPassword: z.string(),
   })
   .refine((data) => data.password === data.confirmPassword, {
-    message: "Passwords do not match",
+    message: "Password does not match!",
     path: ["confirmPassword"],
   });
 
@@ -49,8 +50,28 @@ const ResetPasswordForm = ({ jwtUserId }: Props) => {
     setPassStrength(passwordStrength(watch().password).id);
   }, [watch().password]);
 
+  const resetPass: SubmitHandler<InputType> = async (data) => {
+    try {
+      const result = await resetPassword(
+        jwtUserId,
+        data.password
+      );
+      if (result === "success")
+        toast.success(
+          "Your password has been reset successfully"
+        );
+    } catch (error) {
+      toast.error("Something went wrong");
+      console.error(error);
+    }
+  };
+
   return (
-    <form>
+    <form
+      onSubmit={handleSubmit(resetPass)}
+      className="flex flex-col gap-2 p-2 m-2 border rounded-md shadow"
+    >
+      <div className="p-2 text-center">Reset Your Password</div>
       <Input
         type={visiblePass ? "text" : "password"}
         label="Password"
@@ -73,7 +94,7 @@ const ResetPasswordForm = ({ jwtUserId }: Props) => {
       <Input
         type={visiblePass ? "text" : "password"}
         label="Confirm Password"
-        {...register("password")}
+        {...register("confirmPassword")}
         errorMessage={errors.confirmPassword?.message}
         endContent={
           <button
@@ -88,6 +109,16 @@ const ResetPasswordForm = ({ jwtUserId }: Props) => {
           </button>
         }
       />
+      <div className="flex justify-center">
+        <Button
+          isLoading={isSubmitting}
+          type="submit"
+          disabled={isSubmitting}
+          color="primary"
+        >
+          {isSubmitting ? "Please Wait..." : "Submit"}
+        </Button>
+      </div>
     </form>
   );
 };
