@@ -81,7 +81,7 @@ export async function forgotPassword(email: string) {
     id: user.id,
   });
 
-  const resetPassUrl = ` ${process.env.NEXTAUTH_URL}/auth/reset-password/${jwtUserID}`;
+  const resetPassUrl = ` ${process.env.NEXTAUTH_URL}/auth/resetPass/${jwtUserID}`;
   const body = compileResetPassTemplate(
     user.firstName,
     resetPassUrl
